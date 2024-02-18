@@ -1,3 +1,7 @@
+"""
+This python file creates the .pkl file to be used by miami_housing_prices.py as model
+and avoid charging it for every prediction.
+"""
 import pandas as pd
 import pickle # Reads the pickle file produced in model_builder.py
 from sklearn.ensemble import RandomForestRegressor
