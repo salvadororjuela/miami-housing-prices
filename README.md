@@ -31,5 +31,5 @@ LATITUDE
 LONGITUDE
 
 For the purpose of being able to see the application result and functionality, the model_builder.py
-file uses the first 1500 rows, instead of using the whole dataframe, which would result in a long 
+file uses the first 1000 rows, instead of using the whole dataframe, which would result in a long 
 time awaiting period.
