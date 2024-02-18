@@ -19,8 +19,8 @@ X = pd.DataFrame(miami_csv[["LND_SQFOOT", "TOT_LVG_AREA", "RAIL_DIST", "OCEAN_DI
                             "WATER_DIST", "CNTR_DIST", "SUBCNTR_DI", "HWY_DIST", "age", 
                             "structure_quality", "avno60plus", "month_sold", "SPEC_FEAT_VAL"]])
 Y = pd.DataFrame(miami_csv["SALE_PRC"])
-X_short = X.head(1500)
-Y_short = Y.head(1500)
+X_short = X.head(1000)
+Y_short = Y.head(1000)
 
 # Build and train the Regression Model
 model = RandomForestRegressor()
