@@ -38,6 +38,12 @@ import numpy as np
 import shap # Provides the understanding behind the predictio
 import matplotlib.pyplot as plt
 import pickle
+from PIL import Image
+
+
+image = Image.open('miami-pic.jpg')
+
+st.image(image, use_column_width=True)
 
 # H1 title
 st.write("""
