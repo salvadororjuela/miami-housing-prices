@@ -14,4 +14,4 @@ COPY . /3-miami-housing-prices
 
 ENTRYPOINT [ "streamlit", "run" ]
 
-CMD ["miami_housing_prices.py"]
+CMD ["Hello.py"]
