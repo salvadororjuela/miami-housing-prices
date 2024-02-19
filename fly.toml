@@ -1,0 +1,23 @@
+# fly.toml app configuration file generated for miami-housing-prices on 2024-02-19T12:49:49-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'miami-housing-prices'
+primary_region = 'bog'
+
+[build]
+
+headless=True
+serverAddress = “0.0.0.0”
+
+[http_service]
+  internal_port = 8501
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  size = 'shared-cpu-1x'
