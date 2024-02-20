@@ -1,6 +1,8 @@
 altair
 numpy
+matplotlib
 pandas
 pydeck
+shap
 streamlit
 uvicorn

@@ -19,14 +19,12 @@ X = pd.DataFrame(miami_csv[["LND_SQFOOT", "TOT_LVG_AREA", "RAIL_DIST", "OCEAN_DI
                             "WATER_DIST", "CNTR_DIST", "SUBCNTR_DI", "HWY_DIST", "age", 
                             "structure_quality", "avno60plus", "month_sold", "SPEC_FEAT_VAL"]])
 Y = pd.DataFrame(miami_csv["SALE_PRC"])
-X_short = X.head(1000)
-Y_short = Y.head(1000)
 
 # Build and train the Regression Model
 model = RandomForestRegressor()
 # Y.values.ravel() corrects the following error:
 # A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
-model.fit(X_short, Y_short.values.ravel())
+model.fit(X, Y.values.ravel())
 
 # Saving the model
 pickle.dump(model, open("short_cleaned_miami_housing.pkl", "wb"))

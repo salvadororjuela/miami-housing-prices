@@ -39,32 +39,64 @@ import shap # Provides the understanding behind the predictio
 import matplotlib.pyplot as plt
 import pickle
 from PIL import Image
+ # Import the required variables from model_builder.py
+from model_builder import model, X
 
+def main():
 
-image = Image.open('miami-pic.jpg')
+    image = Image.open('miami-pic.jpg')
 
-st.image(image, use_column_width=True)
+    st.image(image, use_column_width=True)
 
-# H1 title
-st.write("""
-# Miami Housing Price Prediction App
-This app predicts the **Miami House Price** for properites in *2016*!
-""")
+    # H1 title
+    st.write("""
+    # Miami Housing Price Prediction App
+    This app predicts the **Miami House Price** for properites in *2016*!
+    """)
 
-# Expander bar with the "About" information
-expander_bar = st.expander("Description")
-expander_bar.markdown("""
-This app predicts the sale price ("SALE_PRC") of the houses in Miami in 2016 and the feature
-importance to determine the price according attributes the user can select from the side bar.
-""")
-st.write("---")
+    # Expander bar with the "About" information
+    expander_bar = st.expander("Description")
+    expander_bar.markdown("""
+    This app predicts the sale price ("SALE_PRC") of the houses in Miami in 2016 and the feature
+    importance to determine the price according attributes the user can select from the side bar.
+    """)
+    st.write("---")
 
-# Sidebar title
-st.sidebar.header("Please Select Your Desired Parameters")
-st.sidebar.write("---")
+    # Sidebar title
+    st.sidebar.header("Please Select Your Desired Parameters")
+    st.sidebar.write("---")
 
-# Import the value of X from model_builder.py
-from model_builder import X
+    df_full = user_input_features()
+
+    # Display the input parameters
+    st.header("Selected Input Parameters")
+    st.write(df_full)
+    st.write("---")
+
+    # Sale Price Prediction by reading the pkl file created in the model_builder.py file
+    classifier = pickle.load(open("short_cleaned_miami_housing.pkl", "rb"))
+    prediction = classifier.predict(df_full)
+    st.header("Sale Price Prediction")
+    st.write(prediction)
+    st.write("---")
+
+    # Explaining the model's predictiopn using SHAP values
+    # https://github.com/slundberg/shap
+    importance = shap.TreeExplainer(model)
+    shap_vals = importance.shap_values(X)
+
+    st.header("Item Importance")
+    # Sumary Plot
+    st.set_option('deprecation.showPyplotGlobalUse', False) # Disable deprecation warning
+    plt.title("Item Importance Based on SHAP Values")
+    shap.summary_plot(shap_vals, X)
+    st.pyplot(bbox_inches = "tight")
+    st.write("---")
+
+    plt.title("Item Importance Based on SHAP values (Bar)")
+    shap.summary_plot(shap_vals, X, plot_type = "bar")
+    st.pyplot(bbox_inches = "tight")
+    
 
 # Custom function to handle the user input features
 def user_input_features():
@@ -102,37 +134,6 @@ def user_input_features():
     features = pd.DataFrame(data, index = ["Value"])
     return features
 
-df_full = user_input_features()
-df_short = df_full.head(1500)
 
-# Display the input parameters
-st.header("Selected Input Parameters")
-st.write(df_short)
-st.write("---")
-
-# Sale Price Prediction by reading the pkl file created in the model_builder.py file
-classifier = pickle.load(open("short_cleaned_miami_housing.pkl", "rb"))
-prediction = classifier.predict(df_short)
-st.header("Sale Price Prediction")
-st.write(prediction)
-st.write("---")
-
-# Import the required variables from model_builder.py
-from model_builder import model, X_short
-
-# Explaining the model's predictiopn using SHAP values
-# https://github.com/slundberg/shap
-importance = shap.TreeExplainer(model)
-shap_vals = importance.shap_values(X_short)
-
-st.header("Item Importance")
-# Sumary Plot
-st.set_option('deprecation.showPyplotGlobalUse', False) # Disable deprecation warning
-plt.title("Item Importance Based on SHAP Values")
-shap.summary_plot(shap_vals, X_short)
-st.pyplot(bbox_inches = "tight")
-st.write("---")
-
-plt.title("Item Importance Based on SHAP values (Bar)")
-shap.summary_plot(shap_vals, X_short, plot_type = "bar")
-st.pyplot(bbox_inches = "tight")
+if __name__ == '__main__':
+	main()

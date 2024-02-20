@@ -1,7 +1,5 @@
 FROM python:3.10
 
-RUN python -m pip install --upgrade pip
-
 WORKDIR /3-miami-housing-prices
 
 COPY requirements.txt ./requirements.txt 
@@ -12,6 +10,6 @@ EXPOSE 8501
 
 COPY . /3-miami-housing-prices
 
-ENTRYPOINT [ "streamlit", "run" ]
+ENV HOSTNAME=0.0.0.0
 
-CMD ["Hello.py"]
+CMD streamlit run --server.port 8501 --server.enableCORS false Hello.py
